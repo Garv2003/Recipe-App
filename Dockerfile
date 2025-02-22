@@ -1,22 +1,26 @@
 FROM python:3.9-alpine
+
 LABEL maintainer="Garv Aggarwal"
 
 ENV PYTHONUNBUFFERED 1 
 
-COPY ./requirements.txt /tmp/requirements.txt
-COPY ./requirements.dev.txt /tmp/requirements.dev.txt
+COPY requirements.txt /tmp/requirements.txt
+COPY requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /app
+
 WORKDIR /app
+
 EXPOSE 8000
 
 ARG DEV=false
+
 RUN python -m venv /py && \
-    /py/bin/pip install --upgrade pip && \
-    /py/bin/pip install -r /tmp/requirements.txt && \
-    if [ "$DEV"="true" ];\
-        then /py/bin/pip install -r requirements.dev.txt ;\
+    /py/bin/pip install --upgrade pip --timeout 100 --retries 3 && \
+    /py/bin/pip install -r /tmp/requirements.txt --timeout 100 --retries 3 && \
+    if [ "$DEV"="true" ]; \
+        then /py/bin/pip install -r /tmp/requirements.dev.txt --timeout 100 --retries 3; \
     fi && \
-    rm -rf /tmp && \ 
+    rm -rf /tmp && \
     adduser \
         --disabled-password \
         --no-create-home \
@@ -25,5 +29,3 @@ RUN python -m venv /py && \
 ENV PATH="/py/bin:$PATH"
 
 USER django-user
-
-
