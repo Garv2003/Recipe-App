@@ -7,7 +7,7 @@ exclude =
     venv,
     env,
     manage.py,
-    settings.py  
+    settings.py,
 
 ignore =
     E501, 
