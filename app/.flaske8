@@ -1,7 +1,20 @@
 [flake8]
+
 exclude =
-    migrations/,
-    __pycache__/,
+    .git,
+    __pycache__,
+    migrations,
+    venv,
+    env,
     manage.py,
-    settings.py,  
-    venv/
+    settings.py  
+
+ignore =
+    E501, 
+    W503, 
+    F403, 
+    F405   
+
+max-line-length = 88
+
+extend-ignore = DJ01  
